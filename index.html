@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <header>
+    <div class="title">
+        <p>Reaction App</p>
+    </div>
+    <nav>
+        <ul>
+            <li><a id="gameBtn" href="#" class="active">Game</a></li>
+            <li><a id="statsBtn" href="#">Stats</a></li>
+        </ul>
+    </nav>
+   </header>
+
+   <main id="main">
+    <div id="initial" class="reaction-block">
+       <i class="fas fa-bolt"></i>
+       <p>Click to start the game</p>
+    </div>
+    <div id="waiting" class="reaction-block hidden">
+        <ul class="dots">
+            <li><i class="fas fa-circle"></i></li>
+            <li><i class="fas fa-circle"></i></li>
+            <li><i class="fas fa-circle"></i></li>
+        </ul>
+        <h2>Waiting for green</h2>
+    </div>
+    <div id="oppsie" class="reaction-block answer-block hidden">
+        <i class="fas fa-bomb"></i>
+        <h2>Oppsie. Too soon.</h2>
+        <p>Click to keep going</p>
+    </div>
+    <div id="click" class="reaction-block hidden">
+        <ul>
+            <li><i class="fas fa-circle"></i></li>
+            <li><i class="fas fa-circle"></i></li>
+            <li><i class="fas fa-circle"></i></li>
+        </ul>
+        <h2>Click!</h2>
+    </div>
+    <div id="result" class="reaction-block answer-block hidden">
+        
+    </div>
+   </main>
+
+   <footer>
+    <p>Made by CactusTree; Copyrights &nbsp; 2020</p>
+   </footer>
+</body>
+<script src="script.js"></script>
+</html>
