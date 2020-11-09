@@ -21,33 +21,38 @@
    </header>
 
    <main id="main">
-    <div id="initial" class="reaction-block">
-       <i class="fas fa-bolt"></i>
-       <p>Click to start the game</p>
+    <div id="game">
+        <div id="initial" class="reaction-block">
+            <i class="fas fa-bolt"></i>
+            <p>Click to start the game</p>
+         </div>
+         <div id="waiting" class="reaction-block hidden">
+             <ul class="dots">
+                 <li><i class="fas fa-circle"></i></li>
+                 <li><i class="fas fa-circle"></i></li>
+                 <li><i class="fas fa-circle"></i></li>
+             </ul>
+             <h2>Waiting for green</h2>
+         </div>
+         <div id="oppsie" class="reaction-block answer-block hidden">
+             <i class="fas fa-bomb"></i>
+             <h2>Oppsie. Too soon.</h2>
+             <p>Click to keep going</p>
+         </div>
+         <div id="click" class="reaction-block hidden">
+             <ul>
+                 <li><i class="fas fa-circle"></i></li>
+                 <li><i class="fas fa-circle"></i></li>
+                 <li><i class="fas fa-circle"></i></li>
+             </ul>
+             <h2>Click!</h2>
+         </div>
+         <div id="result" class="reaction-block answer-block hidden">
+             
+         </div>
     </div>
-    <div id="waiting" class="reaction-block hidden">
-        <ul class="dots">
-            <li><i class="fas fa-circle"></i></li>
-            <li><i class="fas fa-circle"></i></li>
-            <li><i class="fas fa-circle"></i></li>
-        </ul>
-        <h2>Waiting for green</h2>
-    </div>
-    <div id="oppsie" class="reaction-block answer-block hidden">
-        <i class="fas fa-bomb"></i>
-        <h2>Oppsie. Too soon.</h2>
-        <p>Click to keep going</p>
-    </div>
-    <div id="click" class="reaction-block hidden">
-        <ul>
-            <li><i class="fas fa-circle"></i></li>
-            <li><i class="fas fa-circle"></i></li>
-            <li><i class="fas fa-circle"></i></li>
-        </ul>
-        <h2>Click!</h2>
-    </div>
-    <div id="result" class="reaction-block answer-block hidden">
-        
+    <div id="stats" class="reaction-block hidden">
+    
     </div>
    </main>
 

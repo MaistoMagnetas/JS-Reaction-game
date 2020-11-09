@@ -1,4 +1,8 @@
+
+
 const mainWindow = document.getElementById("main");
+const gameWindow = document.getElementById("game");
+const statsWindow = document.getElementById("stats");
 const gameBtn = document.getElementById("gameBtn");
 const statsBtn = document.getElementById("statsBtn");
 
@@ -13,23 +17,27 @@ const active = "active";
 const hidden = "hidden";
 
 var gameState = "initialized";
-var timer;
 var startingTime;
+var worker = new Worker('timer.js', {type: "module"});
 
 initializeGame();
+
+worker.addEventListener("message", function(e){
+    if (e.data === "Worker finished"){
+        hideAllReactionBlocks();
+        gameState = clickScreen.id;
+        mainWindow.innerHtml = clickScreen;
+        clickScreen.classList.remove(hidden);
+        startingTime = new Date().getTime();
+    }
+});
 
 function initializeGame(){
     mainWindow.innerHtml = initialScreen;
 }
 
 function startWaiting(){
-    timer = setTimeout(function initClickScreen() {
-        hideAllReactionBlocks();
-        gameState = clickScreen.id;
-        mainWindow.innerHtml = clickScreen;
-        clickScreen.classList.remove(hidden);
-        startingTime = new Date().getTime();
-    }, getRandomTime());  
+    worker.postMessage("Start Timer");
 }
 
 function addStat(stat){
@@ -43,18 +51,8 @@ function addStat(stat){
     localStorage.setItem('stats', JSON.stringify(stats));
 }
 
-function showStats(){
-    const stats = loadStats();
-
-}
-
 function loadStats(){
     return JSON.parse(localStorage.getItem('stats'));
-}
-
-function getRandomTime(){
-    //1 - 5s range
-    return Math.floor(Math.random() * 5000) + 1000; 
 }
 
 function addClassToComponent(component, classToAdd){
@@ -78,24 +76,24 @@ function changeClickComponent(component){
 }
 
 mainWindow.addEventListener("click", () => {
-    hideAllReactionBlocks();
-    if (gameState === "initialized" || gameState === "oppsie" || gameState === "result"){
-        changeClickComponent(waitingScreen);
-        startWaiting();
-    }else{
-        clearTimeout(timer);
-        if (gameState === "click"){
-            gameState = resultScreen.id;
-            const passedTime = new Date().getTime() - startingTime;
-            addStat(passedTime);
-            resultScreen.innerHTML = `
-            <i class="fas fa-clock"></i>
-            <h2>${passedTime} ms</h2>
-            <p>Click to keep going</p>`;
-            resultScreen.classList.remove(hidden);
-        }else if (gameState === "waiting"){
-            console.log('clicked');
-            changeClickComponent(oppsieScreen);
+    if (!gameWindow.classList.contains('hidden')){
+        hideAllReactionBlocks();
+        if (gameState === "initialized" || gameState === "oppsie" || gameState === "result"){
+            changeClickComponent(waitingScreen);
+            startWaiting();
+        }else{
+            if (gameState === "click"){
+                gameState = resultScreen.id;
+                const passedTime = new Date().getTime() - startingTime;
+                addStat(passedTime);
+                resultScreen.innerHTML = `
+                <i class="fas fa-clock"></i>
+                <h2>${passedTime} ms</h2>
+                <p>Click to keep going</p>`;
+                resultScreen.classList.remove(hidden);
+            }else if (gameState === "waiting"){
+                changeClickComponent(oppsieScreen);
+            }
         }
     }
 });
@@ -104,6 +102,8 @@ gameBtn.addEventListener("click", () => {
     if (!gameBtn.classList.contains(active))
     {
         statsBtn.classList.remove(active);
+        addClassToComponent(statsWindow, hidden);
+        gameWindow.classList.remove(hidden);
         addClassToComponent(gameBtn, active)
         initializeGame();
     }
@@ -112,9 +112,28 @@ gameBtn.addEventListener("click", () => {
 statsBtn.addEventListener("click", () => {
     if (!statsBtn.classList.contains(active))
     {
+        const stats = loadStats();
+        const p = document.createElement("p");
+        const ul = document.createElement("ul");
+        var minStat = 99999999999999999999999999999999999;
+        stats.forEach(stat => {
+            const li = document.createElement("li");
+            li.innerText = `${stat} ms`;
+            ul.appendChild(li);
+            if (stat < minStat){
+                minStat = stat;
+            }
+        });
+        p.innerText = `
+            Fastest time: ${minStat} ms
+        `;
+        statsWindow.appendChild(p);
+        statsWindow.appendChild(ul);
+
         gameBtn.classList.remove(active);
+        addClassToComponent(gameWindow, hidden);
+        statsWindow.classList.remove(hidden);
         addClassToComponent(statsBtn, active)
-        showStats();
     }
 });
 
